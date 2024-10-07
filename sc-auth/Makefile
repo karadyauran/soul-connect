@@ -17,6 +17,9 @@ swag: ##  Generate swagger specification
 db-schema: ## Generate db schema
 	sqlc generate
 
+proto-generate:
+	protoc --proto_path=../proto --go_out=./internal --go-grpc_out=./internal ../proto/auth.proto
+
 help: ## Display help message
 	@echo "Available targets:"
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  %-15s %s\n", $$1, $$2}' Makefile

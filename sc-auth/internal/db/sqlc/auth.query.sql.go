@@ -98,6 +98,32 @@ func (q *Queries) GetUserById(ctx context.Context, id pgtype.UUID) (Auth, error)
 	return i, err
 }
 
+const getUserByUsername = `-- name: GetUserByUsername :one
+SELECT id, username, email, password
+FROM auth
+WHERE username = $1
+LIMIT 1
+`
+
+type GetUserByUsernameRow struct {
+	ID       pgtype.UUID `json:"id"`
+	Username string      `json:"username"`
+	Email    string      `json:"email"`
+	Password string      `json:"password"`
+}
+
+func (q *Queries) GetUserByUsername(ctx context.Context, username string) (GetUserByUsernameRow, error) {
+	row := q.db.QueryRow(ctx, getUserByUsername, username)
+	var i GetUserByUsernameRow
+	err := row.Scan(
+		&i.ID,
+		&i.Username,
+		&i.Email,
+		&i.Password,
+	)
+	return i, err
+}
+
 const updateLastLogin = `-- name: UpdateLastLogin :exec
 UPDATE auth
 SET last_login = NOW()

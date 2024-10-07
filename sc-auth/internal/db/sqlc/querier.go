@@ -23,6 +23,7 @@ type Querier interface {
 	GetSessionByUserId(ctx context.Context, userID pgtype.UUID) ([]GetSessionByUserIdRow, error)
 	GetUserByEmail(ctx context.Context, email string) (GetUserByEmailRow, error)
 	GetUserById(ctx context.Context, id pgtype.UUID) (Auth, error)
+	GetUserByUsername(ctx context.Context, username string) (GetUserByUsernameRow, error)
 	LogFailedLogin(ctx context.Context, username string) error
 	LogSuccessfulLogin(ctx context.Context, username string) error
 	UpdateLastLogin(ctx context.Context, id pgtype.UUID) error

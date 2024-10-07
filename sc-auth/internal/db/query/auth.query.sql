@@ -3,6 +3,12 @@ INSERT INTO auth (username, email, password)
 VALUES (@username, @email, @password)
     RETURNING id, username, email, password;
 
+-- name: GetUserByUsername :one
+SELECT id, username, email, password
+FROM auth
+WHERE username = @username
+LIMIT 1;
+
 -- name: GetUserByEmail :one
 SELECT id, username, email, password
 FROM auth

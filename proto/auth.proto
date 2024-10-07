@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "./generated";
+
+import "google/protobuf/empty.proto";
+
+service AuthService {
+  rpc Register(RegisterUserRequest) returns (RegisterUserResponse);
+  rpc Login(LoginUserRequest) returns (LoginUserResponse);
+  rpc Logout(LogoutUserRequest) returns (google.protobuf.Empty);
+  rpc LogoutFromAllDevices(LogoutUserFromAllDevicesRequest) returns (google.protobuf.Empty);
+  rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty);
+}
+
+message RegisterUserRequest {
+  string username = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message RegisterUserResponse {
+  string id = 1;
+  string username = 2;
+  string email = 3;
+}
+
+message LoginUserRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginUserResponse {
+  string id = 1;
+  string username = 2;
+  string email = 3;
+  string access_token = 4;
+  string refresh_token = 5;
+}
+
+message LogoutUserRequest {
+  string token = 1;
+}
+
+message LogoutUserFromAllDevicesRequest {
+  string user_id = 1;
+}
+
+message DeleteUserRequest {
+  string user_id = 1;
+}
