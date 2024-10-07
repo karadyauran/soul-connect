@@ -6,9 +6,13 @@
     "build": "make build",
     "start": "nodemon --watch . --exec 'make start' --signal SIGTERM --ext go,json,yaml,sql,env,sh",
     "serve": "make start",
-    "db:generate": "make db-schema"
+    "db:generate": "make db-schema",
+    "test:integration": "make test"
   },
   "keywords": [],
   "author": "karadyauran",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^3.1.7"
+  }
 }

@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "serve": "pnpm --stream --recursive --workspace-concurrency 100 serve"
+    "serve": "pnpm --stream --recursive --workspace-concurrency 100 serve",
+    "start": "pnpm  --stream --recursive --workspace-concurrency 100 start",
+    "test:integration": "pnpm --stream --recursive --workspace-concurrency 1 test:integration"
   },
   "keywords": [],
   "author": "karadiauran",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "nodemon": "^3.1.7"
+  }
 }
