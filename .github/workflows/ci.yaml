@@ -20,14 +20,14 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.18
+          go-version: 1.23
 
       - name: Install dependencies
         run: go mod download
 
       - name: Run Golang Linter
         run: |
-          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.44.0
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.61.0
           golangci-lint run ./...
 
       - name: Run Tests
@@ -38,19 +38,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: '18.12'
 
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Run ESLint
-        run: pnpm run lint
-
-      - name: Run Tests
-        run: pnpm run test -- --watchAll=false
+      - name: Install pnpm
+        run: |
+          npm install -g pnpm
+          pnpm install

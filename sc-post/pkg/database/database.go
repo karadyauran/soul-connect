@@ -3,7 +3,7 @@ package database
 import (
 	"context"
 	"fmt"
-	"soul-connect/sc-auth/internal/config"
+	"soul-connect/sc-post/internal/config"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
