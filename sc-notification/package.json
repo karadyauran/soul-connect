@@ -1,0 +1,11 @@
+{
+  "name": "sc-notification",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+
+  },
+  "keywords": [],
+  "author": "karadyauran",
+  "license": "ISC"
+}
