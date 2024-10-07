@@ -1,17 +1,15 @@
 version: '3.8'
 
 services:
-  postgresql:
-    image: postgres:13
-    container_name: sc-main-database
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: secret
-      POSTGRES_DB: sc_db
+  sc-database:
+    build:
+      context: ./postgres
+      dockerfile: sc-database.Dockerfile
+    container_name: sc-database
+    env_file:
+      - ./postgres/.env.db
     ports:
       - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
     networks:
       - backend
 
@@ -19,7 +17,7 @@ services:
     build: ./sc-api-getaway
     container_name: sc-api-gateway
     depends_on:
-      - postgresql
+      - sc-database
     environment:
       - DATABASE_URL=postgresql://root:secret@postgresql:5432/sc_db?sslmode=disable
     ports:
