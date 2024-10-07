@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-
+    "serve": "pnpm --stream --recursive --workspace-concurrency 100 serve"
   },
   "keywords": [],
   "author": "karadiauran",

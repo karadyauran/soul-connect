@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "build": "make build",
+    "start": "nodemon --watch . --exec 'make start' --signal SIGTERM --ext go,json,yaml,sql,env,sh",
+    "serve": "make start",
     "db:generate": "make db-schema"
   },
   "keywords": [],
