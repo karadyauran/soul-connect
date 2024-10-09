@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS login_attempts (
 
 CREATE TABLE IF NOT EXISTS sessions (
     id UUID PRIMARY KEY DEFAULT (uuid_generate_v4()),
-    user_id UUID REFERENCES auth(id),
+    user_id UUID REFERENCES auth(id) ON DELETE CASCADE,
     session_token VARCHAR(255) NOT NULL,
     session_expires_at TIMESTAMP NOT NULL
 );

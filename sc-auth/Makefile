@@ -11,9 +11,6 @@ test: ## Run all tests
 install: ## Install dependencies
 	go mod tidy
 
-swag: ##  Generate swagger specification
-	swag init -g cmd/general/main.go
-
 db-schema: ## Generate db schema
 	sqlc generate
 

@@ -35,7 +35,7 @@ func GenerateToken(userID string, secretSessionKey string) (*Token, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, accessTokenClaims)
-	accessToken, err := token.SignedString(secretSessionKey)
+	accessToken, err := token.SignedString([]byte(secretSessionKey))
 	if err != nil {
 		return nil, errors.New("failed to generate access token")
 	}
@@ -52,7 +52,7 @@ func GenerateToken(userID string, secretSessionKey string) (*Token, error) {
 	}
 
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshTokenClaims)
-	refreshTokenStr, err := refreshToken.SignedString(secretSessionKey)
+	refreshTokenStr, err := refreshToken.SignedString([]byte(secretSessionKey))
 	if err != nil {
 		return nil, errors.New("failed to generate refresh token")
 	}

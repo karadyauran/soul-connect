@@ -3,7 +3,7 @@ SET TIMEZONE = 'UTC';
 -- creating a post table
 CREATE TABLE IF NOT EXISTS  posts (
     id UUID PRIMARY KEY DEFAULT (uuid_generate_v4()),
-    user_id UUID NOT NULL REFERENCES users(id),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     title VARCHAR(255) NOT NULL,
     description TEXT,
     likes_count INT DEFAULT 0,
@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS  posts (
 --creating a comment table
 CREATE TABLE IF NOT EXISTS  comments (
     id UUID PRIMARY KEY DEFAULT (uuid_generate_v4()),
-    post_id UUID NOT NULL REFERENCES posts(id),
-    user_id UUID NOT NULL REFERENCES users(id),
+    post_id UUID NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     content TEXT NOT NULL,
     likes_count INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT NOW(),
@@ -37,8 +37,8 @@ INSERT INTO labels (name) VALUES
 ('Calm');
 
 CREATE TABLE IF NOT EXISTS  labels_posts (
-    label_id UUID NOT NULL REFERENCES labels(id),
-    post_id UUID NOT NULL REFERENCES posts(id)
+    label_id UUID NOT NULL REFERENCES labels(id) ON DELETE CASCADE,
+    post_id UUID NOT NULL REFERENCES posts(id) ON DELETE CASCADE
 );
 
 -- creating a table of likes
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS  likes (
    id UUID PRIMARY KEY DEFAULT (uuid_generate_v4()),
    post_id UUID REFERENCES posts(id) ON DELETE CASCADE,
    comment_id UUID REFERENCES comments(id) ON DELETE CASCADE,
-   user_id UUID NOT NULL REFERENCES users(id),
+   user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
    created_at TIMESTAMP DEFAULT NOW(),
    CONSTRAINT unique_post_comment_user_like UNIQUE (post_id, comment_id, user_id)
 );

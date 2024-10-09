@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS users (
 -- creating a table of subscriptions
 CREATE TABLE IF NOT EXISTS subscriptions (
    id UUID PRIMARY KEY DEFAULT (uuid_generate_v4()),
-   subscriber_id UUID NOT NULL REFERENCES users(id),
-   author_id UUID NOT NULL REFERENCES users(id),
+   subscriber_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+   author_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
    created_at TIMESTAMP DEFAULT NOW()
 );
 

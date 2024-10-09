@@ -14,13 +14,6 @@ import (
 	"soul-connect/sc-auth/pkg/database"
 )
 
-// @title           Authentication gRPC AuthServer
-// @version         0.1.0
-// @description     API for managing user authentication and authorization.
-// @contact.email   alex.karadyaur@outlook.com
-// @license.name    MIT
-// @license.url     https://github.com/karadyauran/soul-connect/blob/main/LICENSE
-// @host            localhost:8010
 func main() {
 	// Load configuration
 	newConfig, err := config.LoadConfig("./")

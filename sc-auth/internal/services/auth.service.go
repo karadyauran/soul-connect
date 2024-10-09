@@ -78,62 +78,54 @@ func (s *AuthService) Login(ctx context.Context, loginCredentials models.UserLog
 		return nil, err
 	}
 
+	// Comparing passwords
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginCredentials.Password)); err != nil {
-		// Log if login NOT successful
 		if err := s.authRepo.LogFailedLogin(ctx, loginCredentials.Username); err != nil {
 			return nil, err
 		}
 		return nil, errors.New("invalid credentials")
 	}
 
-	// Log if login successful
+	// Log successful login
 	if err := s.authRepo.LogSuccessfulLogin(ctx, loginCredentials.Username); err != nil {
 		return nil, err
 	}
 
-	// Update last login info
+	// Update last date of login
 	if err := s.authRepo.UpdateLastLogin(ctx, user.ID); err != nil {
 		return nil, err
 	}
 
-	// Get all sessions by user ID
+	// Clean up sessions
 	sessions, err := s.authRepo.GetSessionByUserId(ctx, user.ID)
 	if err != nil {
 		return nil, err
 	}
-
-	// Get active sessions from all sessions
 	activeSessions, err := s.cleanUpSessions(ctx, sessions)
 	if err != nil {
 		return nil, err
 	}
 
-	// User ID convert to string
+	// Generation token
 	userID := uuid.UUID(user.ID.Bytes[:])
-	var refreshToken string
+	tokens, err := utils.GenerateToken(userID.String(), secret)
+	if err != nil {
+		return nil, errors.New("failed to generate tokens")
+	}
 
+	var refreshToken string
 	if len(activeSessions) > 0 {
 		refreshToken = activeSessions[0].SessionToken
 	} else {
-		tokens, err := utils.GenerateToken(userID.String(), secret)
-		if err != nil {
-			return nil, errors.New("failed to generate tokens")
-		}
-
 		_, err = s.authRepo.CreateSession(ctx, db.CreateSessionParams{
 			UserID:           user.ID,
 			SessionToken:     tokens.RefreshToken,
-			SessionExpiresAt: pgtype.Timestamp{Time: tokens.ExpiresAt},
+			SessionExpiresAt: pgtype.Timestamp{Time: tokens.ExpiresAt, Valid: true},
 		})
 		if err != nil {
 			return nil, errors.New("failed to generate session")
 		}
 		refreshToken = tokens.RefreshToken
-	}
-
-	tokens, err := utils.GenerateToken(userID.String(), secret)
-	if err != nil {
-		return nil, errors.New("failed to generate tokens")
 	}
 
 	return &models.UserLoginResponseDTO{
