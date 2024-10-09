@@ -65,10 +65,8 @@ func main() {
 	}
 
 	// Waiting for the shutdown context to be done or timeout
-	select {
-	case <-ctx.Done():
-		log.Println("Server shutdown completed or timed out")
-	}
+	<-ctx.Done()
+	log.Println("Server shutdown completed or timed out")
 
 	log.Println("Server exiting")
 	os.Exit(0)

@@ -64,6 +64,10 @@ func (s *AuthService) Register(ctx context.Context, params models.CreateUserRequ
 		Password: string(hashedPassword),
 	})
 
+	if err != nil {
+		return nil, err
+	}
+
 	userID := uuid.UUID(newUser.ID.Bytes[:])
 	return &models.CreateUserResponse{
 		ID:       userID.String(),
