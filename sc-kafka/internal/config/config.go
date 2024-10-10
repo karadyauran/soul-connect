@@ -6,8 +6,9 @@ import (
 )
 
 type KafkaConfig struct {
-	Broker string `mapstructure:"KAFKA_BROKER"`
-	Topic  string `mapstructure:"KAFKA_TOPIC"`
+	ServerPort string `mapstructure:"SERVER_PORT"`
+	Brokers    string `mapstructure:"BROKERS"`
+	Topic      string `mapstructure:"TOPIC"`
 }
 
 func LoadKafkaConfig(path string) (config KafkaConfig, err error) {

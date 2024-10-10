@@ -13,25 +13,25 @@ services:
     networks:
       - backend
 
-  sc-api-getaway:
-    build: ./sc-api-getaway
-    container_name: sc-api-gateway
-    depends_on:
-      - sc-database
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
     environment:
-      - DATABASE_URL=postgresql://root:secret@postgresql:5432/sc_db?sslmode=disable
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
     ports:
-      - "8000:8000"
-    networks:
-      - backend
+      - "2181:2181"
 
-  nginx:
-    build: ./sc-api-getaway
-    container_name: sc-nginx
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    depends_on:
+      - zookeeper
     ports:
-      - "80:80"
-    networks:
-      - backend
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
 networks:
   backend:

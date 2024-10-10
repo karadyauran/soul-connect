@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "./generated";
+
+service KafkaService {
+  rpc KafkaSend(MessageRequest) returns (MessageResponse);
+}
+
+message MessageRequest {
+  string id = 1;
+  string content = 2;
+  string createdAt = 3;
+}
+
+message MessageResponse {
+  string response = 1;
+}
